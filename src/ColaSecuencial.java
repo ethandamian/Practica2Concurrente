@@ -48,46 +48,10 @@ public class ColaSecuencial {
 		}
 	}
 
-	public static void onlyDeq(ExecutorService executor, ColaSecuencial queue) {
-		try {
-
-			executor.submit(() -> queue.deq());
-			Thread.sleep(2000);
-			executor.submit(() -> queue.deq());
-			Thread.sleep(2000);
-			executor.submit(() -> queue.deq());
-			executor.submit(() -> queue.deq());
-			executor.submit(() -> queue.deq());
-			Thread.sleep(3000);
-			executor.submit(() -> queue.deq());
-			System.out.println("End of onlyDeq");
-		} catch (Exception e) {
-			System.out.println("Error" + e);
-		}
-
-	}
-
-	public static void onlyEnq(ExecutorService executor, ColaSecuencial queue) {
-		try {
-			executor.submit(() -> queue.enq("x"));
-			Thread.sleep(2000);
-			executor.submit(() -> queue.enq("a"));
-			executor.submit(() -> queue.enq("b"));
-			executor.submit(() -> queue.enq("c"));
-			Thread.sleep(3000);
-			executor.submit(() -> queue.enq("x"));
-		} catch (Exception e) {
-			System.out.println("Error" + e);
-		}
-
-		System.out.println("End of onlyEnq");
-	}
-
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ColaSecuencial queue = new ColaSecuencial();
-		ExecutorService executor = Executors.newFixedThreadPool(4);
-		System.out.println("Start");
+		ExecutorService executor = Executors.newFixedThreadPool(6);
 		// queue.deq();
 		// queue.enq("x");
 		// queue.enq("a");
@@ -101,8 +65,20 @@ public class ColaSecuencial {
 		// queue.enq("x");
 
 		// Concurrent queue
-		onlyEnq(executor, queue);
-		onlyDeq(executor, queue);
+		// onlyEnq(executor, queue);
+		// onlyDeq(executor, queue);
+
+		executor.submit(() -> queue.enq("x"));
+		executor.submit(() -> queue.deq());
+		executor.submit(() -> queue.enq("a"));
+		executor.submit(() -> queue.enq("b"));
+		executor.submit(() -> queue.enq("c"));
+		executor.submit(() -> queue.deq());
+		executor.submit(() -> queue.deq());
+		executor.submit(() -> queue.deq());
+		executor.submit(() -> queue.deq());
+		executor.submit(() -> queue.enq("x"));
+
 		executor.shutdown();
 		queue.print();
 	}
