@@ -2,6 +2,9 @@
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ColaSecuencial {
 	private Nodo head;
@@ -49,38 +52,49 @@ public class ColaSecuencial {
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		ColaSecuencial queue = new ColaSecuencial();
 		ExecutorService executor = Executors.newFixedThreadPool(6);
-		// queue.deq();
-		// queue.enq("x");
-		// queue.enq("a");
-		// queue.deq();
-		// queue.enq("b");
-		// queue.enq("c");
-		// queue.deq();
-		// queue.deq();
-		// queue.deq();
-		// queue.deq();
-		// queue.enq("x");
 
-		// Concurrent queue
-		// onlyEnq(executor, queue);
-		// onlyDeq(executor, queue);
+		List<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
+		List<Future<String>> futures2 = new ArrayList<Future<String>>();
 
-		executor.submit(() -> queue.enq("x"));
-		executor.submit(() -> queue.deq());
-		executor.submit(() -> queue.enq("a"));
-		executor.submit(() -> queue.enq("b"));
-		executor.submit(() -> queue.enq("c"));
-		executor.submit(() -> queue.deq());
-		executor.submit(() -> queue.deq());
-		executor.submit(() -> queue.deq());
-		executor.submit(() -> queue.deq());
-		executor.submit(() -> queue.enq("x"));
+		futures.add(executor.submit(() -> queue.enq("x")));
+		futures.add(executor.submit(() -> queue.enq("a")));
+		futures2.add(executor.submit(() -> queue.deq()));
+		futures.add(executor.submit(() -> queue.enq("b")));
+		futures2.add(executor.submit(() -> queue.deq()));
+		futures2.add(executor.submit(() -> queue.deq()));
 
-		executor.shutdown();
-		queue.print();
+		for (Future<Boolean> future : futures) {
+			try {
+				System.out.println(future.get());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		for (Future<String> future : futures2) {
+			try {
+				System.out.println(future.get());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		/*try {
+			System.out.println("Enqueue x: " + futures.get(0).get());
+			System.out.println("Enqueue a: " + futures.get(1).get());
+			System.out.println("Dequeue: " + futures2.get(0).get());
+			System.out.println("Enqueue b: " + futures.get(2).get());
+			System.out.println("Dequeue: " + futures2.get(1).get());
+			System.out.println("Dequeue: " + futures2.get(2).get());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+
+
+        executor.shutdown();
+        queue.print();
 	}
 
 }
