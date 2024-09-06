@@ -1,6 +1,3 @@
-package colaSecuencial;
-//Programa 7: Cola Secuencial, utiliza la clase Nodo
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -11,11 +8,29 @@ public class ColaSecuencial {
 	private Nodo head;
 	private Nodo tail;
 
+	// The `public ColaSecuencial()` constructor in the `ColaSecuencial` class is
+	// initializing the queue by
+	// creating two sentinel nodes - `head` and `tail`. These sentinel nodes are
+	// used to simplify the
+	// implementation of the queue.
 	public ColaSecuencial() {
 		this.head = new Nodo("hnull");
 		this.tail = new Nodo("tnull");
 		this.head.next = this.tail;
 	}
+
+	/**
+	 * The `enq` function adds a new node containing a given value to the end of a
+	 * linked list.
+	 * 
+	 * @param x The `enq` method you provided seems to be an implementation of an
+	 *          enqueue operation in a
+	 *          queue data structure. The parameter `x` represents the data that you
+	 *          want to enqueue into the queue.
+	 *          In this method, a new node containing the data `x` is created and
+	 *          added to the end
+	 * @return The `enq` method is returning a Boolean value, specifically `true`.
+	 */
 
 	public Boolean enq(String x) {
 		Nodo newnode = new Nodo(x);
@@ -31,6 +46,14 @@ public class ColaSecuencial {
 		return true;
 	}
 
+	/**
+	 * The `deq()` function removes and returns the item at the front of a queue, or
+	 * returns "empty" if the
+	 * queue is empty.
+	 * 
+	 * @return The method is returning the item stored in the first node of the
+	 *         linked list.
+	 */
 	public String deq() {
 		if (this.head.next == this.tail) {
 			return "empty";
@@ -40,6 +63,10 @@ public class ColaSecuencial {
 		return first.item;
 	}
 
+	/**
+	 * The `print` function in Java prints the items of a linked list starting from
+	 * the head node.
+	 */
 	public void print() {
 		System.out.println("Print ");
 		Nodo pred = this.head;
@@ -52,6 +79,11 @@ public class ColaSecuencial {
 		}
 	}
 
+	/**
+	 * The main function creates a thread pool, enqueues and dequeues elements in a
+	 * sequential queue, and
+	 * prints the results using Futures in Java.
+	 */
 	public static void main(String[] args) {
 		ColaSecuencial queue = new ColaSecuencial();
 		ExecutorService executor = Executors.newFixedThreadPool(6);
@@ -59,12 +91,41 @@ public class ColaSecuencial {
 		List<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
 		List<Future<String>> futures2 = new ArrayList<Future<String>>();
 
-		futures.add(executor.submit(() -> queue.enq("x")));
-		futures.add(executor.submit(() -> queue.enq("a")));
-		futures2.add(executor.submit(() -> queue.deq()));
-		futures.add(executor.submit(() -> queue.enq("b")));
-		futures2.add(executor.submit(() -> queue.deq()));
-		futures2.add(executor.submit(() -> queue.deq()));
+		futures.add(executor.submit(() -> {
+			Boolean result = queue.enq("x");
+			queue.print();
+			return result;
+		}));
+
+		futures.add(executor.submit(() -> {
+			Boolean result = queue.enq("a");
+			queue.print();
+			return result;
+		}));
+
+		futures2.add(executor.submit(() -> {
+			String result = queue.deq();
+			queue.print();
+			return result;
+		}));
+
+		futures.add(executor.submit(() -> {
+			Boolean result = queue.enq("b");
+			queue.print();
+			return result;
+		}));
+
+		futures2.add(executor.submit(() -> {
+			String result = queue.deq();
+			queue.print();
+			return result;
+		}));
+
+		futures2.add(executor.submit(() -> {
+			String result = queue.deq();
+			queue.print();
+			return result;
+		}));
 
 		for (Future<Boolean> future : futures) {
 			try {
@@ -82,21 +143,6 @@ public class ColaSecuencial {
 			}
 		}
 
-		/*
-		 * try {
-		 * System.out.println("Enqueue x: " + futures.get(0).get());
-		 * System.out.println("Enqueue a: " + futures.get(1).get());
-		 * System.out.println("Dequeue: " + futures2.get(0).get());
-		 * System.out.println("Enqueue b: " + futures.get(2).get());
-		 * System.out.println("Dequeue: " + futures2.get(1).get());
-		 * System.out.println("Dequeue: " + futures2.get(2).get());
-		 * } catch (Exception e) {
-		 * e.printStackTrace();
-		 * }
-		 */
-
 		executor.shutdown();
-		queue.print();
 	}
-
 }
