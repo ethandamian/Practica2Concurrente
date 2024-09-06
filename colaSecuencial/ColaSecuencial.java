@@ -1,3 +1,4 @@
+package colaSecuencial;
 //Programa 7: Cola Secuencial, utiliza la clase Nodo
 
 import java.util.concurrent.ExecutorService;
@@ -81,20 +82,21 @@ public class ColaSecuencial {
 			}
 		}
 
-		/*try {
-			System.out.println("Enqueue x: " + futures.get(0).get());
-			System.out.println("Enqueue a: " + futures.get(1).get());
-			System.out.println("Dequeue: " + futures2.get(0).get());
-			System.out.println("Enqueue b: " + futures.get(2).get());
-			System.out.println("Dequeue: " + futures2.get(1).get());
-			System.out.println("Dequeue: " + futures2.get(2).get());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
+		/*
+		 * try {
+		 * System.out.println("Enqueue x: " + futures.get(0).get());
+		 * System.out.println("Enqueue a: " + futures.get(1).get());
+		 * System.out.println("Dequeue: " + futures2.get(0).get());
+		 * System.out.println("Enqueue b: " + futures.get(2).get());
+		 * System.out.println("Dequeue: " + futures2.get(1).get());
+		 * System.out.println("Dequeue: " + futures2.get(2).get());
+		 * } catch (Exception e) {
+		 * e.printStackTrace();
+		 * }
+		 */
 
-
-        executor.shutdown();
-        queue.print();
+		executor.shutdown();
+		queue.print();
 	}
 
 }
