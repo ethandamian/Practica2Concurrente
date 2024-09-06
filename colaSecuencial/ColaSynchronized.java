@@ -1,4 +1,5 @@
 package colaSecuencial;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -117,16 +118,5 @@ public class ColaSynchronized {
         }
 
         executor.shutdown();
-    }
-}
-
-// Nodo class for the queue
-class Nodo {
-    String item;
-    Nodo next;
-
-    Nodo(String item) {
-        this.item = item;
-        this.next = null;
     }
 }
